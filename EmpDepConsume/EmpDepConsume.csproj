@@ -75,6 +75,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="consume.html" />
+    <Content Include="consumejs.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
