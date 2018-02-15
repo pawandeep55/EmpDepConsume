@@ -12,9 +12,10 @@
             {
                 "data": "EmpId",
                 render: function (data) {
-                    return "<button class='btn btn-info js-edit' data-empid=" + data + " data-toggle='modal' data-target='#myModal'>Edit</button>" + "  " + "<button class='btn btn-danger js-delete' data-empid=" + data + ">Delete</button>"
+                    return "<button class='btn btn-info js-edit' data-empid=" + data + " >Edit</button>" + "  " + "<button class='btn btn-danger js-delete' data-empid=" + data + ">Delete</button>"
                 }
             }
+            //data- toggle='modal' data- target='#myModal'
             //,
             //{
             //    "data": "EmpId",
@@ -22,7 +23,7 @@
             //        return "<button class='btn btn-danger js-delete' data-empid=" + data + ">Delete</button>"
             //    }
             //}
-            
+
         ]
         //,
         //"columnDefs": [{
@@ -31,7 +32,39 @@
         //}]
 
     })
-
+    $('#myTable').on('click', '.js-edit', function () {
+        var button = $(this)
+        //alert('yoo ' + button.attr("data-empid"))
+        var p = button.attr("data-empid");
+        var newUrl = "http://localhost:57671/api/emp/" + p
+        alert(newUrl)
+        $.ajax({
+            contentType: "application/json",
+            url: newUrl,
+            success: function (json) {
+                console.log(json.EmpName)
+                $('#myModal').modal('toggle');
+                $('#myModal #EmpName').val(json.EmpName)
+                $('#myModal #DeptName').val(json.DeptName)
+                $('#jsupdate').attr("data-empid", p)
+            }
+        })
+    })
+    $('#myModal').on('click', '#jsupdate', function () {
+        var button = $(this)
+        //alert('check' + button.attr("data-empid"))
+        $.ajax({
+            contentType: "application/json",
+            url: "http://localhost:57671/api/emp/" + button.attr("data-empid"),
+            type: "PUT",
+            success: function (json) {
+                console.log(json)
+                $('#myModal').modal('toggle');
+                alert('updated')
+            }
+        })
+    
+    })
     $('#myTable').on('click', '.js-delete', function () {
         var button = $(this);
         bootbox.confirm("Are you sure you want to delete this Employee?", function (result) {
